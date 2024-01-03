@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet-routing-machine/dist/leaflet-routing-machine.css" />
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Arial', sans-serif;
+            background-color: rgb(35, 40, 86);
+            color: #fff;
+        }
+
+        h1 {
+            text-align: center;
+            color: rgb(255, 214, 0);
+            margin-top: 20px;
+        }
+
+        .mapa {
+            width: 90%;
+            max-width: 1200px;
+            margin: 20px auto;
+            background-color: rgb(112, 149, 180);
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            overflow: hidden;
+            height: 750px;
+        }
+
+        #map {
+            width: 100%;
+            height: 100%;
+        }
+
+        .leaflet-routing-container{
+            background-color: rgba(35, 40, 86, 0.8); /* Fondo semi-transparente */
+            color: #fff;
+        }
+    </style>
+</head>
+<body>
+    <div>
+        <h1>Mapa</h1>
+        <div class="mapa">
+            <div id="map"></div>
+        </div>
+    </div>
+
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <script src="https://unpkg.com/leaflet-routing-machine/dist/leaflet-routing-machine.js"></script>
+    <script>
+        function mapa() {
+            var coordenadasInicio = [-35.661875, -71.817617];
+            var coordenadasFin = [-35.948523, -72.203596];
+
+            var map = L.map('map').setView(coordenadasInicio, 5);
+
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '© OpenStreetMap contributors',
+                minZoom: 3,
+                maxZoom: 18,
+                tileSize: 512,
+                zoomOffset: -1,
+                zoomControl: false,
+                detectRetina: true,
+            }).addTo(map);
+
+            L.marker(coordenadasInicio).addTo(map)
+                .bindPopup('Inicio');
+
+            L.marker(coordenadasFin).addTo(map)
+                .bindPopup('Fin');
+
+            L.Routing.control({
+                waypoints: [
+                    L.latLng(coordenadasInicio[0], coordenadasInicio[1]),
+                    L.latLng(coordenadasFin[0], coordenadasFin[1])
+                ],
+                routeWhileDragging: true
+            }).addTo(map);
+        }
+
+        addEventListener('DOMContentLoaded', mapa);
+    </script>
+</body>
+</html>
